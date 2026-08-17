@@ -2,97 +2,84 @@
 
 ## Project Overview
 
-Cloud Backup Guardian is an automated cloud backup and recovery system built using AWS services. The system automatically detects files uploaded to a Source S3 Bucket, creates a backup in a separate Backup S3 Bucket, stores backup metadata in DynamoDB, monitors events using CloudWatch, and sends notifications through Amazon SNS.
+Cloud Backup Guardian is an automated cloud backup and recovery system built using AWS services.
+
+The system automatically detects files uploaded to a source Amazon S3 bucket, creates a backup in a separate backup S3 bucket, stores backup metadata in Amazon DynamoDB, monitors events using Amazon CloudWatch, and sends notifications through Amazon SNS.
+
+## Objectives
+
+- Automatically back up uploaded files
+- Maintain a separate backup storage location
+- Store backup metadata for tracking and recovery
+- Monitor the backup process
+- Provide notifications for backup events
+- Improve data reliability and recovery
 
 ## AWS Services Used
 
-- Amazon S3
-- AWS Lambda
-- Amazon DynamoDB
-- Amazon CloudWatch
-- Amazon SNS
-- AWS IAM
+- Amazon S3 – Source and backup file storage
+- AWS Lambda – Automated backup processing
+- Amazon DynamoDB – Backup metadata storage
+- Amazon CloudWatch – Monitoring and logging
+- Amazon SNS – Notifications
+- AWS IAM – Permissions and access control
 
-## System Architecture
+## Architecture
 
-User → Source S3 Bucket → AWS Lambda → Backup S3 Bucket → DynamoDB → CloudWatch → Amazon SNS
+The project follows this workflow:
 
-## How It Works
+S3 Source Bucket
+       ↓
+AWS Lambda
+       ↓
+Backup S3 Bucket
+       ↓
+DynamoDB Metadata
 
-1. A user uploads a file to the Source S3 Bucket.
-2. The S3 upload event triggers the AWS Lambda function.
-3. Lambda detects the newly uploaded file.
-4. Lambda copies the file to the Backup S3 Bucket.
+CloudWatch monitors the Lambda execution and SNS can be used for notifications.
+
+## Project Workflow
+
+1. A file is uploaded to the source S3 bucket.
+2. The S3 event triggers the Lambda function.
+3. Lambda processes the uploaded file.
+4. The file is copied to the backup S3 bucket.
 5. Backup metadata is stored in DynamoDB.
-6. CloudWatch records the backup events and Lambda execution logs.
-7. Amazon SNS sends notifications for backup success or failure.
-8. Files can be restored from the Backup Bucket when required.
+6. CloudWatch records execution logs and monitoring information.
+7. SNS can send notifications about backup events.
 
-## Backup Metadata
+## Lambda Function
 
-The system records:
+The main automation logic is implemented in:
 
-- File Name
-- Upload Time
-- Backup Status
-- File Size
-- Timestamp
-- Recovery Status
+`lambda-function.py`
 
-## Monitoring and Validation
+The function handles the backup process and returns a success response when the backup is completed successfully.
 
-The system validates that:
+## Dashboard
 
-- Uploaded files are automatically backed up.
-- Duplicate uploads can be detected using file metadata.
-- Backup events are logged in CloudWatch.
-- Backup success and failure events can generate SNS notifications.
-- Files can be restored from the Backup Bucket.
+A project dashboard was designed to present the Cloud Backup Guardian system and its architecture.
 
-## Project Deliverables
-
-### Python Lambda Script
-
-AWS Lambda function developed using Python and boto3.
-
-### Dashboard
-
-The project dashboard was developed using Wix.
-
-Dashboard PDF:
+Dashboard file:
 
 `Cloud_Backup_Guardian_Dashboard.pdf`
 
-### Architecture Diagram
-
-The architecture diagram represents the complete AWS backup workflow.
-
-### Backup Report
-
-The backup report contains:
-
-- File Name
-- Upload Time
-- Backup Status
-- Recovery Status
-- Timestamp
-
-## Testing
-
-Multiple files were uploaded to the Source S3 Bucket to validate the backup workflow.
-
-The following were verified:
-
-- Automatic file backup
-- Metadata storage
-- CloudWatch logging
-- SNS notification workflow
-- File recovery from the Backup Bucket
-
 ## Project Status
 
-Project completed and tested as part of the internship project submission.
+- S3 backup workflow: Completed
+- Lambda function: Completed
+- DynamoDB metadata storage: Completed
+- CloudWatch monitoring: Configured
+- SNS notifications: Configured
+- Project dashboard: Completed
+- Documentation: Completed
 
-## Author
+## Repository Contents
 
-Krishan Kant
+- `lambda-function.py` – AWS Lambda backup function
+- `Cloud_Backup_Guardian_Dashboard.pdf` – Project dashboard and architecture
+- `README.md` – Project documentation
+
+## Conclusion
+
+Cloud Backup Guardian demonstrates how AWS serverless services can be integrated to create an automated, monitored, and reliable cloud backup solution.
